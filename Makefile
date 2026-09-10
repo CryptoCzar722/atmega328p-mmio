@@ -9,7 +9,7 @@ OBJCOPY = avr-objcopy
 CFLAGS = -Wall -g -Os -mmcu=$(MCU) -DF_CPU=$(F_CPU)
 
 TARGET = main
-SRCS = main.c gpio.c
+SRCS = main.c gpio.c uart.c
 
 all: $(TARGET).hex
 
@@ -21,6 +21,9 @@ $(TARGET).hex: $(TARGET).elf
 
 upload: $(TARGET).hex
 	avrdude -F -V -c $(PROGRAMMER) -p $(MCU) -P $(PORT) -b $(BAUD) -U flash:w:$(TARGET).hex:i
+
+monitor:
+	screen /dev/cu.usbserial-14110
 
 clean:
 	rm -f $(TARGET).elf $(TARGET).hex

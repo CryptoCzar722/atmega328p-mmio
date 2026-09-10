@@ -20,9 +20,9 @@
 
 IO IO_B  = 
   {
-  // .portin = 0x23,
-  .ddr = 0x24, 
-  .port = 0x25
+  .portin = (volatile uint8_t *)0x23,
+  .ddr = (volatile uint8_t *)0x24, 
+  .port = (volatile uint8_t *)0x25
   };
 
 // IO IOC  = 
