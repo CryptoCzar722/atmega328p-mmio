@@ -27,9 +27,38 @@ IO IO_D  =
 void gpio_open()
   {
   // *(volatile uint8_t *)0x24 = 1 << 5;
+  //output
   *IO_B.ddr |= 1 << 5;
+  //input
   *IO_D.ddr &= ~(1 << 5);
+    // *IO_B.ddr |= 1 << 5;
+    // *IO_B.ddr |= 1 << 4;
   }
+
+void gpio_pin_open(uint8_t port, uint8_t pin, uint8_t output, uint8_t pull)
+    {
+    volatile uint8_t * ddr_mem = NULL;
+    volatile uint8_t * port_mem = NULL;
+    switch (port)
+        {
+        case PORT_B:
+            ddr_mem = IO_B.ddr;    
+            port_mem = IO_B.port;
+            break;
+        case PORT_C:
+            ddr_mem = IO_C.ddr;  
+            port_mem = IO_C.port;
+            break;
+        case PORT_D:
+            ddr_mem = IO_D.ddr;  
+            port_mem = IO_D.port;
+            break;
+        }   
+    if(ddr_mem == NULL || port_mem == NULL) return;  
+    if (output) *ddr_mem   |= 1 << pin;
+    if (!output) *ddr_mem  &= ~(1 << 5);
+    if (output & pull) *port_mem |= 1 << pin;
+    }
 
 void gpio_write2(uint8_t set)
     { //uint8_t port, uint8_t pin){

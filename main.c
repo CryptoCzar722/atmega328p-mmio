@@ -5,14 +5,13 @@
 //
 #include "mmio/gpio.h"
 #include "mmio/uart.h"
+#include "mmio/twi.h"
 
 
 // #define STR_LEN 13
 // char str[STR_LEN] = {'H', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd', '\n','\r'};
 
 char gpioStr[4] = {'B', '5', '-','>'};
-// char *gpioStr; 
-
 char new_line[2] = {'\n','\r'};
 
 
@@ -20,8 +19,8 @@ int main(void)
     {
     gpio_open();
     uart_open();
+    twi_open();
 
-    // sprintf(gpioStr, "hello chris");
     while(1) 
         {
         // gpio_write();

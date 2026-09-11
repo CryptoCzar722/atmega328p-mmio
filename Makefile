@@ -9,7 +9,7 @@ OBJCOPY = avr-objcopy
 CFLAGS = -Wall -g -Os -mmcu=$(MCU) -DF_CPU=$(F_CPU)
 
 TARGET = main
-SRCS = main.c mmio/gpio.c mmio/uart.c
+SRCS = main.c mmio/gpio.c mmio/uart.c mmio/twi.c
 
 all: $(TARGET).hex
 

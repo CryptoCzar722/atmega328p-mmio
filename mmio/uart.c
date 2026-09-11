@@ -1,5 +1,8 @@
 #include "uart.h"
 
+// PD0 RX
+// PD1 TX
+
 UART serial  = 
   {
   .prr    = (volatile uint8_t *)0x64, 
