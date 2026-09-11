@@ -20,6 +20,7 @@ typedef struct
 
 void uart_open();
 void uart_print(char *str, uint8_t len);
+void uart_write(uint8_t *str, uint8_t len);
 
 
 #endif

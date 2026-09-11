@@ -31,7 +31,9 @@ enum port_out {
 
 void gpio_open();
 // void gpio_write();
-void gpio_write(uint8_t set);
+// void gpio_write(uint8_t set);
+void gpio_toggle(uint8_t port, uint8_t pin);
+void gpio_write(uint8_t port, uint8_t pin, uint8_t state);
 uint8_t gpio_read(uint8_t port, uint8_t pin);
 
 

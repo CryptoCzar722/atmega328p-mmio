@@ -32,7 +32,17 @@ void uart_print(char *str, uint8_t len)
     *serial.udr0 = str[i];
     }
 
-  while (!(*serial.ucsr0a & (1 << 5)));
-  *serial.udr0 = '\n';
+//   while (!(*serial.ucsr0a & (1 << 5)));
+//   *serial.udr0 = '\n';
   }
+
+void uart_write(uint8_t *str, uint8_t len)
+  {
+  for (int i = 0; i < len; i++)
+    {
+    while (!(*serial.ucsr0a & (1 << 5)));
+    *serial.udr0 = str[i];
+    }
+  }
+
 
