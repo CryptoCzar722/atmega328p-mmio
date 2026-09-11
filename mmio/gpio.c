@@ -56,8 +56,8 @@ void gpio_pin_open(uint8_t port, uint8_t pin, uint8_t output, uint8_t pull)
         }   
     if(ddr_mem == NULL || port_mem == NULL) return;  
     if (output) *ddr_mem   |= 1 << pin;
-    if (!output) *ddr_mem  &= ~(1 << 5);
-    if (output & pull) *port_mem |= 1 << pin;
+    if (!output) *ddr_mem  &= ~(1 << pin);
+    if (pull) *port_mem |= 1 << pin;
     }
 
 void gpio_write2(uint8_t set)

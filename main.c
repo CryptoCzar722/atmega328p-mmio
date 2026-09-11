@@ -12,6 +12,7 @@
 // char str[STR_LEN] = {'H', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd', '\n','\r'};
 
 char gpioStr[4] = {'B', '5', '-','>'};
+char twiStr[11] = {'T', 'W', 'I', ' ', 'c', 'o', 'u', 'n', 't','-','>' };
 char new_line[2] = {'\n','\r'};
 
 
@@ -20,6 +21,17 @@ int main(void)
     gpio_open();
     uart_open();
     twi_open();
+    _delay_ms(10);
+    
+    uint8_t twiCount = twi_scan();
+    while(1)
+        {
+        uint8_t twi_ascii = twiCount + '0';   // 0 -> '0' (0x30), 1 -> '1' (0x31)
+        uart_print(twiStr, 11);
+        uart_write(&twi_ascii, 1);
+        uart_print(new_line, 2);
+        _delay_ms(1000);
+        }
 
     while(1) 
         {
