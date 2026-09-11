@@ -1,54 +1,56 @@
 #include "gpio.h"
 
-
-// enum port { 
-//   PORT_B,
-//   PORT_C,
-//   PORT_D,
-// }
-
-// enum {
-//   POIN_B,
-//   POIN_C,
-//   POIN_D,
-// }
-// enum port_out {
-//   POUT_B,
-//   POUT_C,
-//   POUT_D
-// }
-
 IO IO_B  = 
   {
   .portin = (volatile uint8_t *)0x23,
-  .ddr = (volatile uint8_t *)0x24, 
-  .port = (volatile uint8_t *)0x25
+  .ddr    = (volatile uint8_t *)0x24, 
+  .port   = (volatile uint8_t *)0x25
   };
 
-// IO IOC  = 
-//   {
-//   .portin = 0x26
-//   .ddr = 0x27, 
-//   .port = 0x28
-//   };
+IO IO_C  = 
+  {
+  .portin = (volatile uint8_t *)0x26,
+  .ddr    = (volatile uint8_t *)0x27, 
+  .port   = (volatile uint8_t *)0x28
+  };
 
-// IO IOD  = 
-//   {
-//   .portin = 0x29,
-//   .ddr = 0x2A, 
-//   .port = 0x2B
-//   };
+IO IO_D  = 
+  {
+  .portin = (volatile uint8_t *)0x29,
+  .ddr    = (volatile uint8_t *)0x2A, 
+  .port   = (volatile uint8_t *)0x2B
+  };
 
 
 void gpio_open()
   {
   // *(volatile uint8_t *)0x24 = 1 << 5;
   *IO_B.ddr |= 1 << 5;
+  *IO_D.ddr &= ~(1 << 5);
   }
 
-void gpio_write(){ //uint8_t port, uint8_t pin){
-  // PORTB ^= 1 << PB5;
-  // *(volatile uint8_t *)0x25 ^= 1 << 5;
-  // case 
-  *IO_B.port ^= 1 << 5;
-}
+void gpio_write(uint8_t set)
+    { //uint8_t port, uint8_t pin){
+    if (set) *IO_B.port |= 1 << 5;
+    else *IO_B.port &= ~(1 << 5);
+    }
+
+
+uint8_t gpio_read(uint8_t portin, uint8_t pin)
+    { 
+    volatile uint8_t port_mem;
+    switch (portin)
+        {
+        case POIN_B:
+            port_mem = *IO_B.portin;
+            break;
+        case POIN_C:
+            port_mem = *IO_C.portin;
+            break;
+        case POIN_D:
+            port_mem = *IO_D.portin;
+            break;
+        }    
+    uint8_t mem_read = (port_mem >> pin) & 0x01;
+    return mem_read;
+    }

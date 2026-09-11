@@ -10,8 +10,29 @@ typedef struct
   volatile uint8_t * port; //memory to port pins 
   }IO;
 
+
+enum port { 
+  PORT_B = 0,
+  PORT_C,
+  PORT_D,
+};
+
+enum portin{
+  POIN_B = 0,
+  POIN_C,
+  POIN_D,
+};
+
+enum port_out {
+  POUT_B = 1,
+  POUT_C,
+  POUT_D
+};
+
 void gpio_open();
-void gpio_write();
+// void gpio_write();
+void gpio_write(uint8_t set);
+uint8_t gpio_read(uint8_t port, uint8_t pin);
 
 
 #endif

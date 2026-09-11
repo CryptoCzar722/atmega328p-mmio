@@ -15,9 +15,15 @@ int main(void) {
     uart_open();
 
     while(1) {
-        gpio_write();
-        uart_print(str, STR_LEN);
-        uart_print(str, STR_LEN);
+        // gpio_write();
+        // uart_print(str, STR_LEN);
+        uint8_t p5 = gpio_read(POIN_D, 5);
+        if (!p5) gpio_write(1);
+        else gpio_write(0);
+
         _delay_ms(500);      // Delay 500 ms
+        // for (uint16_t delay = 0; delay < 50000; delay++){
+        //     __asm__("nop");
+        // }
     }
 }
