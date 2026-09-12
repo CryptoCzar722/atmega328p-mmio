@@ -7,20 +7,21 @@
 Status codes
 ***************************************************************************/
 
-#define TWI_START      0x08  // START condition transmitted
-#define TWI_REP_START  0x10  // repeated START transmitted
-#define TWI_MT_SLA_ACK 0x18  // SLA+W transmitted, ACK received
-#define TWI_MT_SLA_NACK 0x20 // SLA+W transmitted, NACK received
-#define TWI_MT_DATA_ACK 0x28 // data byte transmitted, ACK received
-#define TWI_MT_DATA_NACK 0x30 // data byte transmitted, NACK received
-
+#define TWI_START           0x08  // START condition transmitted
+#define TWI_REP_START       0x10  // repeated START transmitted
+#define TWI_MT_SLA_ACK      0x18  // SLA+W transmitted, ACK received
+#define TWI_MT_SLA_NACK     0x20 // SLA+W transmitted, NACK received
+#define TWI_MT_DATA_ACK     0x28 // data byte transmitted, ACK received
+#define TWI_MT_DATA_NACK    0x30 // data byte transmitted, NACK received
+#define TWI_MR_SLA_ACK      0x40
+#define TWI_MR_DATA_NACK    0x58
 
 /**************************************************************************
 Memory bit fields
 ***************************************************************************/
 
 enum twamr{
-    twam0 = 0,
+    twam0 = 1,
     twam1,
     twam2,
     twam3,
@@ -70,8 +71,13 @@ Function calls
 
 
 void twi_open();
+uint8_t twi_write(uint8_t address, uint8_t data);
+uint8_t twi_read(uint8_t address, uint8_t * data_rd);
+//
+uint8_t twi_write_reg(uint8_t address, uint8_t reg, uint8_t data);
+uint8_t twi_read_reg(uint8_t address, uint8_t reg, uint8_t *data);
 
-uint8_t twi_scan(void);
+// uint8_t twi_scan(void);
 // uint8_t twi_probe(void);
 
 #endif

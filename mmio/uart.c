@@ -1,7 +1,6 @@
 #include "uart.h"
 
-// PD0 RX
-// PD1 TX
+char new_line[2] = {'\n','\r'};
 
 UART serial  = 
   {
@@ -27,7 +26,7 @@ void uart_open()
   *serial.ucsr0c = (1 << 3) | (3 << 1);
   }
 
-void uart_print(char *str, uint8_t len)
+void uart_print(char *str, uint8_t len, uint8_t newline)
   {
   for (int i = 0; i < len; i++)
     {
@@ -35,17 +34,32 @@ void uart_print(char *str, uint8_t len)
     *serial.udr0 = str[i];
     }
 
-//   while (!(*serial.ucsr0a & (1 << 5)));
-//   *serial.udr0 = '\n';
+    //  uart_print(new_line, 2, 0);
+    if (newline)
+      {
+      while (!(*serial.ucsr0a & (1 << 5)));
+      *serial.udr0 = '\n';
+      while (!(*serial.ucsr0a & (1 << 5)));
+      *serial.udr0 = '\r';
+      }
   }
 
-void uart_write(uint8_t *str, uint8_t len)
+void uart_write(uint8_t *str, uint8_t len, uint8_t newline)
   {
   for (int i = 0; i < len; i++)
     {
     while (!(*serial.ucsr0a & (1 << 5)));
     *serial.udr0 = str[i];
     }
+
+    // if (newline) uart_print(new_line, 2);
+    if (newline)
+      {
+      while (!(*serial.ucsr0a & (1 << 5)));
+      *serial.udr0 = '\n';
+      while (!(*serial.ucsr0a & (1 << 5)));
+      *serial.udr0 = '\r';
+      }
   }
 
 
