@@ -23,5 +23,5 @@ void uart_open();
 
 void uart_print(char *str, uint8_t len, uint8_t newline);
 void uart_write(uint8_t *str, uint8_t len, uint8_t newline);
-
+void uart_write_hex(uint8_t value, uint8_t newline);
 #endif

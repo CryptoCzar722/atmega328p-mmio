@@ -65,4 +65,15 @@ void uart_write(uint8_t *str, uint8_t len, uint8_t newline)
       }
   }
 
+  void uart_write_hex(uint8_t value, uint8_t newline)
+    {
+    char str[2] = {'0','x'};
+    static const char hex_digits[] = "0123456789ABCDEF";
+    uint8_t buf[2];
+    buf[0] = hex_digits[(value >> 4) & 0x0F];
+    buf[1] = hex_digits[value & 0x0F];
+    uart_print(str,2,0);
+    uart_write(buf, 2, newline);
+    }
+
 

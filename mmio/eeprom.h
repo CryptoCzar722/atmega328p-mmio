@@ -20,8 +20,9 @@ typedef struct {
 }eeprom;
 
 
-void eeprom_write(uint8_t address, uint8_t data);
-void eeprom_read(uint8_t address);
+void eeprom_write(uint16_t address, uint8_t data);
+uint8_t eeprom_read(uint16_t address);
+void eeprom_write_test(uint16_t address, uint8_t data);
 
 
 #endif

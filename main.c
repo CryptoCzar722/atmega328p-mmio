@@ -6,16 +6,15 @@
 #include "mmio/gpio.h"
 #include "mmio/uart.h"
 #include "mmio/twi.h"
+#include "mmio/eeprom.h"
 //
 #include "drivers/mcp23017.h"
 
 // #define STR_LEN 13
 // char str[STR_LEN] = {'H', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd', '\n','\r'};
 
-char gpioStr[4] = {'B', '5', '-','>'};
-char radarStr[8] = {' ', 'R', 'a', 'd', 'a', 'r', '-','>' };
-// char twiStr[11] = {'T', 'W', 'I', ' ', 'c', 'o', 'u', 'n', 't','-','>' };
-// char twiStr[9] = {'T', 'W', 'I', ' ', 'D', 'e', 'v','-','>' };
+char gpioStr[4] = {'B', '4', '-','>'};
+
 
 int main(void) 
     {
@@ -25,23 +24,19 @@ int main(void)
     twi_open();
     // Drivers
     mcp23017_open();
-
     //give 10ms for peripheral IO
     _delay_ms(10);
-    // for (uint8_t addr = 1; addr < 127; addr++)
-    //     {
-    //     // uint8_t data = twi_write(0x22, 0x01);
-    //     // uint8_t data = twi_write(addr, 0x00);
-    //     uint8_t data = twi_write_reg(addr, 0x00, 0x00);
-    //     if (data == 0 || data == 3)
-    //         {
-    //         uint8_t twi_ascii = addr + '0';   // 0 -> '0' (0x30), 1 -> '1' (0x31)
-    //         uart_print(twiStr, 9,0);
-    //         uart_write(&twi_ascii, 1,1);
-    //         }
-    //         _delay_ms(10);
-    //     }
+    //
+    uint8_t ee = eeprom_read(0);
+    uart_print(gpioStr, 4, 0);
+    uart_write_hex(ee, 1);
 
+    eeprom_write(0, 0x33);
+    // eeprom_write_test(0,1);
+    ee = eeprom_read(0);
+    uart_write_hex(ee, 1);
+
+    while(1);
 
     while(1) 
         {
