@@ -28,30 +28,29 @@ int main(void)
     _delay_ms(10);
     //
     uint8_t ee = eeprom_read(0);
-    uart_print(gpioStr, 4, 0);
-    uart_write_hex(ee, 1);
+    static uint8_t lastButton = 0;
+    static uint8_t led = 0;
+    static uint8_t write_once = 0;
 
-    eeprom_write(0, 0x99);
-    ee = eeprom_read(0);
-    uart_write_hex(ee, 1);
-
-    while(1);
+    if (ee == 0x01)
+        {
+        led = 1;
+        lastButton = 1;
+        gpio_write(PORT_B, 5, 1);
+        mcp_write(A,4,1);
+        }
 
     while(1) 
-        {
-        static uint8_t lastButton = 0;
-        static uint8_t toggle = 0;
-        static uint8_t write_once = 0;
+        {        
 
         uint8_t button = mcp_read(0,0); 
         //
-        uint8_t p5_ascii = button + '0';   // 0 -> '0' (0x30), 1 -> '1' (0x31)
         uart_print(gpioStr, 4, 0);
-        uart_write(&p5_ascii, 1, 1);
+        uart_write_hex(button,1);
 
         if (!button && lastButton)
             {
-            toggle = !toggle;
+            led = !led;
             lastButton = 0;
             }
         else if (button && !lastButton) 
@@ -59,14 +58,16 @@ int main(void)
             lastButton = 1;
             }
         //
-        if (toggle && !write_once)
+        if (led && !write_once)
             {
+            eeprom_write(0, 0x01);
             write_once = 1;
-            gpio_write(PORT_B, 5, 1);    
+            gpio_write(PORT_B, 5, 1);
             mcp_write(A,4,1);
             }
-        else if (!toggle && write_once) 
+        else if (!led && write_once) 
             {
+            eeprom_write(0, 0x00);
             write_once = 0;
             gpio_write(PORT_B, 5, 0);  
             mcp_write(A,4,0);  
