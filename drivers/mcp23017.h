@@ -6,11 +6,20 @@
 #include "../mmio/twi.h"
 #include "../mmio/uart.h"
 
-#define ADDR    0x20
-#define ADDR_1  0x21
-#define ADDR_2  0x22
-#define ADDR_4  0x24
+#define ADDR0 0
+#define ADDR1 0
+#define ADDR2 1
+#define ADDR4 0
 
+#if ADDR0
+#define ADDR    0x20
+#elif ADDR1
+#define ADDR  0x21
+#elif ADDR2
+#define ADDR  0x22
+#elif ADDR4
+#define ADDR  0x24
+#endif
                       //B7  B6  B5  B4  B3  B2  B1  B0  RST value
 #define IODIRA   0x00 //IO7 IO6 IO5 IO4 IO3 IO2 IO1 IO0 1111 1111
 #define IODIRB   0x01 //IO7 IO6 IO5 IO4 IO3 IO2 IO1 IO0 1111 1111
@@ -30,22 +39,9 @@
 #define GPIOB    0x13 //GP7 GP6 GP5 GP4 GP3 GP2 GP1 GP0 0000 0000
 #define OLATA    0x14 //OL7 OL6 OL5 OL4 OL3 OL2 OL1 OL0 0000 0000
 #define OLATB    0x15 //OL7 OL6 OL5 OL4 OL3 OL2 OL1 OL0 0000 0000
-
-
-// enum ddr {
-//     ddra = 0x00,
-//     ddrb = 0x01
-// }
-
-// enum gpio {
-//     gpioa = 0x12,
-//     gpiob = 0x13
-// }
-
-
-
-
-
+// Port identifiers
+#define A 0
+#define B 1
 
 void mcp23017_open();
 uint8_t mcp_read(uint8_t port, uint8_t pin);

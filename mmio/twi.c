@@ -65,6 +65,7 @@ uint8_t twi_write_reg(uint8_t address, uint8_t reg, uint8_t data)
         return 4;
         }
     *i2c.twcr = (1<< twint) | (1<<twen) | (1<< twsto);
+    _delay_ms(1);
     return 0;
     }
 
@@ -126,6 +127,9 @@ uint8_t twi_read_reg(uint8_t address, uint8_t reg, uint8_t *data)
         
     *data = *i2c.twdr;
     *i2c.twcr = (1<< twint) | (1<<twen) | (1<< twsto);
+
+    _delay_ms(1);
+
     return 0;
     }
 
@@ -148,6 +152,7 @@ uint8_t twi_read(uint8_t address, uint8_t * data_rd)
     //Read byte out
     *data_rd = *i2c.twdr;
     *i2c.twcr = (1<< twint) | (1<<twen) | (1<< twsto);
+    _delay_ms(1);
     return 0;
     }
 
@@ -170,5 +175,6 @@ uint8_t twi_write(uint8_t address, uint8_t data)
     while (!(*i2c.twcr & (1 << twint)));  // poll for completion
     if ((*i2c.twsr & 0xF8) != TWI_MT_DATA_ACK) return 3;
     *i2c.twcr = (1<< twint) | (1<<twen) | (1<< twsto);
+    _delay_ms(1);
     return 0;
     }

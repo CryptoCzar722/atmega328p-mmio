@@ -9,13 +9,13 @@
 //
 #include "drivers/mcp23017.h"
 
-
 // #define STR_LEN 13
 // char str[STR_LEN] = {'H', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd', '\n','\r'};
 
 char gpioStr[4] = {'B', '5', '-','>'};
+char radarStr[8] = {' ', 'R', 'a', 'd', 'a', 'r', '-','>' };
 // char twiStr[11] = {'T', 'W', 'I', ' ', 'c', 'o', 'u', 'n', 't','-','>' };
-char twiStr[9] = {'T', 'W', 'I', ' ', 'D', 'e', 'v','-','>' };
+// char twiStr[9] = {'T', 'W', 'I', ' ', 'D', 'e', 'v','-','>' };
 
 int main(void) 
     {
@@ -50,11 +50,11 @@ int main(void)
         static uint8_t write_once = 0;
 
         uint8_t button = mcp_read(0,0); 
+        //
         uint8_t p5_ascii = button + '0';   // 0 -> '0' (0x30), 1 -> '1' (0x31)
         uart_print(gpioStr, 4, 0);
         uart_write(&p5_ascii, 1, 1);
 
-        
         if (!button && lastButton)
             {
             toggle = !toggle;
@@ -69,14 +69,14 @@ int main(void)
             {
             write_once = 1;
             gpio_write(PORT_B, 5, 1);    
-            mcp_write(1,1,1);
+            mcp_write(A,4,1);
             }
         else if (!toggle && write_once) 
             {
             write_once = 0;
             gpio_write(PORT_B, 5, 0);  
-            mcp_write(1,1,0);  
+            mcp_write(A,4,0);  
             }
-       _delay_ms(500);      // Delay 500 ms
+       _delay_ms(10);      // Delay 500 ms
         }
     }

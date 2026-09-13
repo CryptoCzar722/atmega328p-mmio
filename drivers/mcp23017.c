@@ -8,37 +8,51 @@ void mcp23017_open()
 
     _delay_ms(10);
 
-    uint8_t gppua = 
-    twi_write_reg(ADDR_2, IODIRA, 0b0000001); //input A0
-    _delay_ms(10);
-    twi_write_reg(ADDR_2, 0x0C, 0b0000001);    //pullup A0
-    _delay_ms(10);
-    uint8_t data_rd = 0;
-    gppua = twi_read_reg(ADDR_2, GPPUA, &data_rd);    //pullup A0
-    uint8_t ascii = gppua + '0';   // 0 -> '0' (0x30), 1 -> '1' (0x31)
-    uart_write(&ascii, 1, 1);
+    twi_write_reg(ADDR, IODIRA, 0b00001111); //input A0
+    twi_write_reg(ADDR, 0x0C, 0b00001111);    //pullup A0
     }
 
 uint8_t mcp_read(uint8_t port, uint8_t pin)
     {
-    uint8_t gpioa;
-    twi_read_reg(ADDR_2, 0x12, &gpioa);    //pullup A0
-    return ( 0x01 & gpioa);
+    uint8_t reg = 0;
+    switch (port)
+        {
+        case A:
+            reg = GPIOA;
+            break;
+        case B:
+            reg = GPIOB;
+            break;
+        default:
+            return 0xFF;
+        }
+    uint8_t gpio;
+    twi_read_reg(ADDR, reg, &gpio);    //pullup A0
+    return ( 0x01 & gpio);
     }
 
 uint8_t mcp_write(uint8_t port, uint8_t pin, uint8_t state)
-    {    
-    uint8_t gpioa;
-    twi_read_reg(ADDR_2, 0x12, &gpioa);    //pullup A0
-    _delay_ms(1);
+    {   
+    uint8_t reg = 0;
+    switch (port)
+        {
+        case A:
+            reg = GPIOA;
+            break;
+        case B:
+            reg = GPIOB;
+            break;
+        default:
+            return 0xFF;
+        } 
+    uint8_t gpio;
+    twi_read_reg(ADDR, reg, &gpio);    //pullup A0
 
-    if (state) gpioa |= (1 << pin);
-    else gpioa &= ~(1 << pin);
+    if (state) gpio |= (1 << pin);
+    else gpio &= ~(1 << pin);
 
-    twi_write_reg(ADDR_2, 0x12, gpioa);
+    twi_write_reg(ADDR, reg, gpio);
 
-    // if (state) twi_write_reg(ADDR_2, 0x12, 0b00000010);
-    // else twi_write_reg(ADDR_2, 0x12, 0b00000000);
     return 1;
     }
 

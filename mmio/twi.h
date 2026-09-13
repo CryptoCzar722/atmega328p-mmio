@@ -2,6 +2,7 @@
 #define TWI_H_
 #include "gpio.h"
 #include <stdint.h>
+#include <util/delay.h>
 
 /**************************************************************************
 Status codes
