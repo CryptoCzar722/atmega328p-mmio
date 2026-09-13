@@ -29,46 +29,54 @@ int main(void)
     //give 10ms for peripheral IO
     _delay_ms(10);
     // for (uint8_t addr = 1; addr < 127; addr++)
-        // // {
-        // uint8_t data = twi_write(0x22, 0x01);
-        // // uint8_t data = twi_write(addr, 0x00);
-        // // uint8_t data = twi_write_reg(addr, 0x00, 0x00);
-        // if (data == 0 || data == 3)
-        //     {
-        //     uint8_t twi_ascii = data + '0';   // 0 -> '0' (0x30), 1 -> '1' (0x31)
-        //     uart_print(twiStr, 9);
-        //     uart_write(&twi_ascii, 1);
-        //     uart_print(new_line, 2);
-        //     }
-        //     _delay_ms(10);
-        // // }
-
-    // uint8_t twiCount = twi_scan();
-    // while(1)
     //     {
-    //     uint8_t twi_ascii = twiCount + '0';   // 0 -> '0' (0x30), 1 -> '1' (0x31)
-    //     uart_print(twiStr, 11);
-    //     uart_write(&twi_ascii, 1);
-    //     uart_print(new_line, 2);
-    //     _delay_ms(1000);
+    //     // uint8_t data = twi_write(0x22, 0x01);
+    //     // uint8_t data = twi_write(addr, 0x00);
+    //     uint8_t data = twi_write_reg(addr, 0x00, 0x00);
+    //     if (data == 0 || data == 3)
+    //         {
+    //         uint8_t twi_ascii = addr + '0';   // 0 -> '0' (0x30), 1 -> '1' (0x31)
+    //         uart_print(twiStr, 9,0);
+    //         uart_write(&twi_ascii, 1,1);
+    //         }
+    //         _delay_ms(10);
     //     }
+
 
     while(1) 
         {
-        // uint8_t p5 = gpio_read(POIN_D, 5);
-        // if (!p5) gpio_write(1);
-        // else gpio_write(0);
-        // gpio_write(POIN_B, 5, p5);
+        static uint8_t lastButton = 0;
+        static uint8_t toggle = 0;
+        static uint8_t write_once = 0;
 
-        uint8_t mcp_a0 = mcp_read(0,0);
+        uint8_t button = mcp_read(0,0); 
+        uint8_t p5_ascii = button + '0';   // 0 -> '0' (0x30), 1 -> '1' (0x31)
         uart_print(gpioStr, 4, 0);
-        uint8_t p5_ascii = mcp_a0 + '0';   // 0 -> '0' (0x30), 1 -> '1' (0x31)
         uart_write(&p5_ascii, 1, 1);
- 
-        gpio_toggle(PORT_B, 5);
+
+        
+        if (!button && lastButton)
+            {
+            toggle = !toggle;
+            lastButton = 0;
+            }
+        else if (button && !lastButton) 
+            {
+            lastButton = 1;
+            }
+        //
+        if (toggle && !write_once)
+            {
+            write_once = 1;
+            gpio_write(PORT_B, 5, 1);    
+            mcp_write(1,1,1);
+            }
+        else if (!toggle && write_once) 
+            {
+            write_once = 0;
+            gpio_write(PORT_B, 5, 0);  
+            mcp_write(1,1,0);  
+            }
        _delay_ms(500);      // Delay 500 ms
-        // for (uint16_t delay = 0; delay < 50000; delay++){
-        //     __asm__("nop");
-        // }
         }
     }

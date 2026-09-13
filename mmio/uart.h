@@ -10,13 +10,13 @@
 
 typedef struct 
   {
-  volatile uint8_t * prr;  // power reduction set 1 to disable
+  volatile uint8_t * prr;     // power reduction set 1 to disable
   volatile uint8_t * ubrr0h; // usart baud speed High
   volatile uint8_t * ubrr0l; // usart baud speed Low
   volatile uint8_t * ucsr0c; // enable mode
   volatile uint8_t * ucsr0b; // enable TX & RX 
   volatile uint8_t * ucsr0a; // 
-  volatile uint8_t * udr0; // data transmisstion register
+  volatile uint8_t * udr0;   // data transmisstion register
   }UART;
 
 void uart_open();

@@ -172,36 +172,3 @@ uint8_t twi_write(uint8_t address, uint8_t data)
     *i2c.twcr = (1<< twint) | (1<<twen) | (1<< twsto);
     return 0;
     }
-
-// Returns 0 if a device ACKs its address, 1 otherwise (no data transferred)
-uint8_t twi_probe(uint8_t address)
-    {
-    *i2c.twcr = (1 << twint) | (1 << twsta) | (1 << twen);
-    while (!(*i2c.twcr & (1 << twint)));
-    if ((*i2c.twsr & 0xF8) != TWI_START) return 1;
-
-    *i2c.twdr = (address << 1) | 0;   // SLA+W
-    *i2c.twcr = (1 << twint) | (1 << twen);
-    while (!(*i2c.twcr & (1 << twint)));
-
-    uint8_t status = *i2c.twsr & 0xF8;
-
-    // Always send STOP to release the bus, whether ACK or NACK
-    *i2c.twcr = (1 << twint) | (1 << twen) | (1 << twsto);
-
-    return (status == TWI_MT_SLA_ACK) ? 0 : 1;  
-    }
-
-uint8_t twi_scan(void)
-{
-    uint8_t found = 0;
-    for (uint8_t addr = 1; addr < 127; addr++)
-    {
-        if (twi_probe(addr) == 0)
-        {
-            found++;
-            // e.g. uart_write(&addr, 1);  // or format/print it
-        }
-    }
-    return found;
-}

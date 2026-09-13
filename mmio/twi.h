@@ -77,7 +77,4 @@ uint8_t twi_read(uint8_t address, uint8_t * data_rd);
 uint8_t twi_write_reg(uint8_t address, uint8_t reg, uint8_t data);
 uint8_t twi_read_reg(uint8_t address, uint8_t reg, uint8_t *data);
 
-// uint8_t twi_scan(void);
-// uint8_t twi_probe(void);
-
 #endif

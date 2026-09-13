@@ -7,13 +7,7 @@ void mcp23017_open()
     gpio_write(PORT_C, 0, 1);
 
     _delay_ms(10);
-    
-    // uint8_t iocon = 0;
-    // twi_read_reg(ADDR_2, 0x0A, &iocon);
-    // uint8_t ascii = iocon + '0';   // 0 -> '0' (0x30), 1 -> '1' (0x31)
-    // uart_write(&ascii, 1, 1);
-    
-    // uint8_t iodir = 
+
     uint8_t gppua = 
     twi_write_reg(ADDR_2, IODIRA, 0b0000001); //input A0
     _delay_ms(10);
@@ -31,3 +25,22 @@ uint8_t mcp_read(uint8_t port, uint8_t pin)
     twi_read_reg(ADDR_2, 0x12, &gpioa);    //pullup A0
     return ( 0x01 & gpioa);
     }
+
+uint8_t mcp_write(uint8_t port, uint8_t pin, uint8_t state)
+    {    
+    uint8_t gpioa;
+    twi_read_reg(ADDR_2, 0x12, &gpioa);    //pullup A0
+    _delay_ms(1);
+
+    if (state) gpioa |= (1 << pin);
+    else gpioa &= ~(1 << pin);
+
+    twi_write_reg(ADDR_2, 0x12, gpioa);
+
+    // if (state) twi_write_reg(ADDR_2, 0x12, 0b00000010);
+    // else twi_write_reg(ADDR_2, 0x12, 0b00000000);
+    return 1;
+    }
+
+
+    

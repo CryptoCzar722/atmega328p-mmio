@@ -6,44 +6,50 @@
 #include "../mmio/twi.h"
 #include "../mmio/uart.h"
 
-
-enum portA
-    {
-    IODIRA = 0,
-    IPOLA,
-    GPINTENA,
-    DEFVALA,
-    INTCONA,
-    IOCONA,
-    GPPUA,
-    INTFA,
-    INTCAPA,
-    GPIOA,
-    OLATA,
-    };
-
-enum portB
-    {
-    IODIRB = 0x10,
-    IPOLB,
-    GPINTENB,
-    DEFVALB,
-    INTCONB,
-    IOCONB,
-    GPPUB,
-    INTFB,
-    INTCAPB,
-    GPIOB,
-    OLATB,
-    };
-
 #define ADDR    0x20
 #define ADDR_1  0x21
 #define ADDR_2  0x22
 #define ADDR_4  0x24
 
+                      //B7  B6  B5  B4  B3  B2  B1  B0  RST value
+#define IODIRA   0x00 //IO7 IO6 IO5 IO4 IO3 IO2 IO1 IO0 1111 1111
+#define IODIRB   0x01 //IO7 IO6 IO5 IO4 IO3 IO2 IO1 IO0 1111 1111
+#define IPOLA    0x02 //IP7 IP6 IP5 IP4 IP3 IP2 IP1 IP0 0000 0000
+#define IPOLB    0x03 //IP7 IP6 IP5 IP4 IP3 IP2 IP1 IP0 0000 0000
+#define GPINTENA 0x04 //GPINT7 GPINT6 GPINT5 GPINT4 GPINT3 GPINT2 GPINT1 GPINT0 0000 0000
+#define GPINTENB 0x05 //GPINT7 GPINT6 GPINT5 GPINT4 GPINT3 GPINT2 GPINT1 GPINT0 0000 0000
+#define DEFVALA  0x06 //DEF7 DEF6 DEF5 DEF4 DEF3 DEF2 DEF1 DEF0 0000 0000
+#define DEFVALB  0x07 //DEF7 DEF6 DEF5 DEF4 DEF3 DEF2 DEF1 DEF0 0000 0000
+#define INTCONA  0x08 //OC7 IOC6 IOC5 IOC4 IOC3 IOC2 IOC1 IOC0 0000 0000
+#define INTCONB  0x09 //IOC7 IOC6 IOC5 IOC4 IOC3 IOC2 IOC1 IOC0 0000 0000
+#define IOCON0   0x0A //BANK MIRROR SEQOP DISSLW HAEN ODR INTPOL — 0000 0000
+#define IOCON1   0x0B //BANK MIRROR SEQOP DISSLW HAEN ODR INTPOL — 0000 0000
+#define GPPUA    0x0C //PU7 PU6 PU5 PU4 PU3 PU2 PU1 PU0 0000 0000
+#define GPPUB    0x0D //PU7 PU6 PU5 PU4 PU3 PU2 PU1 PU0 0000 0000
+#define GPIOA    0x12 //GP7 GP6 GP5 GP4 GP3 GP2 GP1 GP0 0000 0000
+#define GPIOB    0x13 //GP7 GP6 GP5 GP4 GP3 GP2 GP1 GP0 0000 0000
+#define OLATA    0x14 //OL7 OL6 OL5 OL4 OL3 OL2 OL1 OL0 0000 0000
+#define OLATB    0x15 //OL7 OL6 OL5 OL4 OL3 OL2 OL1 OL0 0000 0000
+
+
+// enum ddr {
+//     ddra = 0x00,
+//     ddrb = 0x01
+// }
+
+// enum gpio {
+//     gpioa = 0x12,
+//     gpiob = 0x13
+// }
+
+
+
+
+
+
 void mcp23017_open();
 uint8_t mcp_read(uint8_t port, uint8_t pin);
+uint8_t mcp_write(uint8_t port, uint8_t pin, uint8_t state);
 
 
 #endif

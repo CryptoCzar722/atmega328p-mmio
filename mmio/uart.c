@@ -2,7 +2,7 @@
 
 char new_line[2] = {'\n','\r'};
 
-UART serial  = 
+UART serial = 
   {
   .prr    = (volatile uint8_t *)0x64, 
   .ubrr0h = (volatile uint8_t *)0xC5,  
@@ -26,6 +26,11 @@ void uart_open()
   *serial.ucsr0c = (1 << 3) | (3 << 1);
   }
 
+void uart_printf(char *str, ...)
+  {
+  // snprintf();
+  }
+
 void uart_print(char *str, uint8_t len, uint8_t newline)
   {
   for (int i = 0; i < len; i++)
@@ -34,7 +39,6 @@ void uart_print(char *str, uint8_t len, uint8_t newline)
     *serial.udr0 = str[i];
     }
 
-    //  uart_print(new_line, 2, 0);
     if (newline)
       {
       while (!(*serial.ucsr0a & (1 << 5)));
@@ -52,7 +56,6 @@ void uart_write(uint8_t *str, uint8_t len, uint8_t newline)
     *serial.udr0 = str[i];
     }
 
-    // if (newline) uart_print(new_line, 2);
     if (newline)
       {
       while (!(*serial.ucsr0a & (1 << 5)));
