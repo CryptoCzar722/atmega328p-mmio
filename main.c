@@ -31,8 +31,7 @@ int main(void)
     uart_print(gpioStr, 4, 0);
     uart_write_hex(ee, 1);
 
-    eeprom_write(0, 0x33);
-    // eeprom_write_test(0,1);
+    eeprom_write(0, 0x99);
     ee = eeprom_read(0);
     uart_write_hex(ee, 1);
 
